@@ -1,0 +1,93 @@
+<div class="container">
+  <!-- Cabeçalho -->
+  <header class="my-4 text-center">
+    <h1>Gerenciador de Tarefas</h1>
+    <p class="lead">Organize tarefas e associe-as a pessoas</p>
+  </header>
+
+  <!-- Área de Cadastro de Pessoas -->
+  <section class="mb-5">
+    <h2>Cadastro de Pessoas</h2>
+    <form (submit)="addPessoa()">
+      <div class="mb-3">
+        <label for="personName" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="personName" placeholder="Digite o nome da pessoa" [(ngModel)]="newPessoa.nome" name="personName" />
+      </div>
+      <div class="mb-3">
+        <label for="personEmail" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="personEmail" placeholder="Digite o e-mail da pessoa" [(ngModel)]="newPessoa.email" name="personEmail" />
+      </div>
+      <div class="mb-3">
+        <label for="personBirthDate" class="form-label">Data de Nascimento</label>
+        <input type="date" class="form-control" id="personBirthDate" [(ngModel)]="newPessoa.dataNascimento" name="personBirthDate" />
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar Pessoa</button>
+    </form>
+
+    <!-- Lista de Pessoas -->
+    <h3 class="mt-4">Pessoas Cadastradas</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let pessoa of pessoas">
+        {{ pessoa.nome }} - {{ pessoa.email }} ({{ pessoa.dataNascimento | date }})
+        <button (click)="removePessoa(pessoa.id)" class="btn btn-danger btn-sm float-end">Remover</button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Área de Cadastro de Tarefas -->
+  <section class="mb-5">
+    <h2>Cadastro de Tarefas</h2>
+    <form (submit)="addTarefa()">
+      <div class="mb-3">
+        <label for="taskTitle" class="form-label">Título</label>
+        <input type="text" class="form-control" id="taskTitle" placeholder="Digite o título da tarefa" [(ngModel)]="newTarefa.titulo" name="taskTitle" />
+      </div>
+      <div class="mb-3">
+        <label for="taskDescription" class="form-label">Descrição</label>
+        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Digite a descrição da tarefa" [(ngModel)]="newTarefa.descricao" name="taskDescription"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="taskStatus" class="form-label">Status</label>
+        <select class="form-select" id="taskStatus" [(ngModel)]="newTarefa.status" name="taskStatus">
+          <option value="pendente">Pendente</option>
+          <option value="em progresso">Em Progresso</option>
+          <option value="concluída">Concluída</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar Tarefa</button>
+    </form>
+
+    <!-- Lista de Tarefas -->
+    <h3 class="mt-4">Tarefas Cadastradas</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let tarefa of tarefas">
+        {{ tarefa.titulo }} - {{ tarefa.descricao }} ({{ tarefa.status }})
+        <button (click)="removeTarefa(tarefa.id)" class="btn btn-danger btn-sm float-end">Remover</button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Atribuir Tarefas a Pessoas -->
+  <section>
+    <h2>Atribuir Tarefa a Pessoa</h2>
+    <form (submit)="atribuirTarefa()">
+      <div class="mb-3">
+        <label for="selectPessoa" class="form-label">Pessoa</label>
+        <select class="form-select" id="selectPessoa" [(ngModel)]="selectedPessoaId" name="selectPessoa">
+          <option *ngFor="let pessoa of pessoas" [value]="pessoa.id">
+            {{ pessoa.nome }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="selectTarefa" class="form-label">Tarefa</label>
+        <select class="form-select" id="selectTarefa" [(ngModel)]="selectedTarefaId" name="selectTarefa">
+          <option *ngFor="let tarefa of tarefas" [value]="tarefa.id">
+            {{ tarefa.titulo }}
+          </option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Atribuir Tarefa</button>
+    </form>
+  </section>
+</div>
