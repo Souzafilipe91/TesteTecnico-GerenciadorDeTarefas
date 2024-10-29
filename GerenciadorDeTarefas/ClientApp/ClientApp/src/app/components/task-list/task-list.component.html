@@ -1,0 +1,10 @@
+<div class="container">
+  <h2>Lista de Tarefas</h2>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let task of tasks">
+      <h5>{{ task.titulo }}</h5>
+      <p>{{ task.descricao }}</p>
+      <span>Status: {{ task.status }}</span>
+    </li>
+  </ul>
+</div>
