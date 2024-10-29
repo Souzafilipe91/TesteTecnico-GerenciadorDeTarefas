@@ -1,43 +1,53 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSpaStaticFiles(configuration =>
+builder.Services.AddControllers();
+
+
+builder.Services.AddCors(options =>
 {
-    configuration.RootPath = "ClientApp/dist"; 
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+
+app.UseDefaultFiles(new DefaultFilesOptions
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    DefaultFileNames = new List<string> { "index.html" }
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "dist", "client-app")),
+    RequestPath = ""
+});
 
-app.UseHttpsRedirection();
 
+app.MapFallbackToFile("index.html", new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "dist", "client-app"))
+});
+
+app.UseRouting();
+
+
+app.UseCors("AllowAll");      
 app.UseAuthorization();
 
+
 app.MapControllers();
-
-
-app.UseSpaStaticFiles();
-app.UseSpa(spa =>
-{
-    spa.Options.SourcePath = "ClientApp"; 
-
-    if (app.Environment.IsDevelopment())
-    {
-        spa.UseAngularCliServer(npmScript: "start"); o
-    }
-});
 
 app.Run();
