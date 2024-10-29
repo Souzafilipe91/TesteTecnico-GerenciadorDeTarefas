@@ -9,11 +9,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// Configuração de SPA (Single Page Application)
 builder.Services.AddSpaStaticFiles(configuration =>
 {
-    configuration.RootPath = "ClientApp/dist"; // Localização do build do Angular
+    configuration.RootPath = "ClientApp/dist"; 
 });
 
 var app = builder.Build();
@@ -30,15 +28,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Configuração para servir o front-end Angular
+
 app.UseSpaStaticFiles();
 app.UseSpa(spa =>
 {
-    spa.Options.SourcePath = "ClientApp"; // Localização do projeto Angular
+    spa.Options.SourcePath = "ClientApp"; 
 
     if (app.Environment.IsDevelopment())
     {
-        spa.UseAngularCliServer(npmScript: "start"); // Executa `ng serve` durante o desenvolvimento
+        spa.UseAngularCliServer(npmScript: "start"); o
     }
 });
 
