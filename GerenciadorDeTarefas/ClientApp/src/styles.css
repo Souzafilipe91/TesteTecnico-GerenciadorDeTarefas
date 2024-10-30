@@ -9,6 +9,12 @@
   font-family: Century Gothic;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.app-logo {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
 
 /* Estilo do cabeçalho */
 header {
